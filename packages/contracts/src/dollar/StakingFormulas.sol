@@ -69,13 +69,7 @@ contract StakingFormulas {
         uint256 _stakingLpBalance,
         uint256 _amount
     ) public pure returns (uint256) {
-        if (_stakingLpBalance < _totalLpDeposited && _stakingLpBalance > 0) {
-            // if there is less LP token inside the staking contract that what have been deposited
-            // we have to reduce proportionally the lp amount to withdraw
-            return _amount.fromUInt().mul(_stakingLpBalance.fromUInt()).div(
-                _totalLpDeposited.fromUInt()
-            ).toUInt();
-        }
+        require(_stakingLpBalance >= _amount, "Not sufficient balance for withdrawal at the moment");
         return _amount;
     }
 }
